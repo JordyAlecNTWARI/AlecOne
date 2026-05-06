@@ -6,6 +6,8 @@ import RegisterPage from './pages/RegisterPage';
 import CataloguePage from './pages/CataloguePage';
 import ResourceDetailPage from './pages/ResourceDetailPage';
 import ProfilePage from './pages/ProfilePage';
+import DashboardPage from './pages/admin/DashboardPage';
+import ResourceFormPage from './pages/admin/ResourceFormPage';
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -16,6 +18,7 @@ function Navbar() {
             {isAuthenticated ? (
                 <>
                     <Link to="/profile" style={{ color: 'white' }}>Mon profil</Link>
+                    <Link to="/admin" style={{ color: '#7c6dfa' }}>Admin</Link>
                     <button onClick={logout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Déconnexion</button>
                 </>
             ) : (
@@ -41,6 +44,9 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/admin" element={<DashboardPage />} />
+                        <Route path="/admin/resources/new" element={<ResourceFormPage />} />
+                        <Route path="/admin/resources/:id/edit" element={<ResourceFormPage />} />
                     </Routes>
                 </div>
             </BrowserRouter>
