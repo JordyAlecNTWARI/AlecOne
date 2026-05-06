@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import client from '../api/client';
 
 interface Resource {
@@ -45,6 +46,7 @@ function CataloguePage() {
                         <p>Playlist : {r.playlist?.name ?? 'Aucune'}</p>
                         <p>Statut : {r.isAvailable ? 'Disponible' : 'Emprunté'}</p>
                         <p>{r.description}</p>
+                        <Link to={`/resources/${r.id}`}>Voir le détail</Link>
                     </div>
                 ))}
             </div>
