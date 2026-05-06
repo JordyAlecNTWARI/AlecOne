@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import client from '../api/client';
+import axios from 'axios';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ function LoginPage() {
         e.preventDefault();
         setError('');
         try {
-            const res = await client.post('/../../api/login_check', { email, password });
+            const res = await axios.post('/api/login_check', { email, password });
             login(res.data.token);
             navigate('/');
         } catch {
@@ -37,6 +37,7 @@ function LoginPage() {
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
+            <p>Pas de compte ? <a href="/register">S'inscrire</a></p>
         </div>
     );
 }

@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CataloguePage from './pages/CataloguePage';
 import ResourceDetailPage from './pages/ResourceDetailPage';
+import ProfilePage from './pages/ProfilePage';
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -13,7 +14,10 @@ function Navbar() {
             <Link to="/" style={{ color: 'white' }}>Accueil</Link>
             <Link to="/catalogue" style={{ color: 'white' }}>Catalogue</Link>
             {isAuthenticated ? (
-                <button onClick={logout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Déconnexion</button>
+                <>
+                    <Link to="/profile" style={{ color: 'white' }}>Mon profil</Link>
+                    <button onClick={logout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Déconnexion</button>
+                </>
             ) : (
                 <>
                     <Link to="/login" style={{ color: 'white' }}>Connexion</Link>
@@ -36,6 +40,7 @@ function App() {
                         <Route path="/resources/:id" element={<ResourceDetailPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                     </Routes>
                 </div>
             </BrowserRouter>
