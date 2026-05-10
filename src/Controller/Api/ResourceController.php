@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1/resources', name: 'api_resources_')]
 class ResourceController extends AbstractController
 {
+    private const ID_ROUTE = '/{id}';
+
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(ResourceRepository $repo, Request $request): JsonResponse
     {
@@ -58,7 +60,7 @@ class ResourceController extends AbstractController
         return $this->json(['data' => $data, 'page' => $page]);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    #[Route(self::ID_ROUTE, name: 'show', methods: ['GET'])]
     public function show(Resource $resource): JsonResponse
     {
         return $this->json([
@@ -110,26 +112,26 @@ class ResourceController extends AbstractController
         return $this->json(['message' => 'Ressource creee', 'id' => $resource->getId()], 201);
     }
 
-    #[Route('/{id}', name: 'update', methods: ['PUT'])]
+    #[Route(self::ID_ROUTE, name: 'update', methods: ['PUT'])]
     public function update(Resource $resource, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['title'])) $resource->setTitle($data['title']);
-        if (isset($data['type'])) $resource->setType($data['type']);
-        if (isset($data['description'])) $resource->setDescription($data['description']);
-        if (isset($data['url'])) $resource->setUrl($data['url']);
-        if (isset($data['publishedAt'])) $resource->setPublishedAt(new \DateTime($data['publishedAt']));
-        if (isset($data['isAvailable'])) $resource->setIsAvailable($data['isAvailable']);
+        if (isset($data['title'])) { $resource->setTitle($data['title']); }
+        if (isset($data['type'])) { $resource->setType($data['type']); }
+        if (isset($data['description'])) { $resource->setDescription($data['description']); }
+        if (isset($data['url'])) { $resource->setUrl($data['url']); }
+        if (isset($data['publishedAt'])) { $resource->setPublishedAt(new \DateTime($data['publishedAt'])); }
+        if (isset($data['isAvailable'])) { $resource->setIsAvailable($data['isAvailable']); }
 
         $em->flush();
 
         return $this->json(['message' => 'Ressource mise a jour']);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route(self::ID_ROUTE, name: 'delete', methods: ['DELETE'])]
     public function delete(Resource $resource, EntityManagerInterface $em): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
