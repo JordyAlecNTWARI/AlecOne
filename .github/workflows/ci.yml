@@ -15,7 +15,7 @@ jobs:
                 image: mysql:8.0
                 env:
                     MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: eduvault
+                    MYSQL_DATABASE: eduvault_test
                 ports:
                     - 3306:3306
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -41,13 +41,13 @@ jobs:
             - name: Setup test database
               env:
                   DATABASE_URL: mysql://root:root@127.0.0.1:3306/eduvault
-                  APP_ENV: test
-              run: php bin/console doctrine:schema:create --env=test
+              run: |
+                  php bin/console doctrine:database:create --env=test
+                  php bin/console doctrine:schema:create --env=test
 
             - name: Run tests
               env:
                   DATABASE_URL: mysql://root:root@127.0.0.1:3306/eduvault
-                  APP_ENV: test
               run: php bin/phpunit
 
             - name: Setup Node.js
