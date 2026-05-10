@@ -41,12 +41,15 @@ jobs:
             - name: Setup test database
               env:
                   DATABASE_URL: mysql://root:root@127.0.0.1:3306/eduvault_test
+                  APP_ENV: test
               run: |
+                  php bin/console doctrine:database:create --env=test --if-not-exists
                   php bin/console doctrine:schema:create --env=test
 
             - name: Run tests
               env:
                   DATABASE_URL: mysql://root:root@127.0.0.1:3306/eduvault_test
+                  APP_ENV: test
               run: php bin/phpunit
 
             - name: Setup Node.js
