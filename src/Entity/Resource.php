@@ -37,11 +37,11 @@ class Resource
     #[ORM\Column]
     private ?bool $isAvailable = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'yes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'resources')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Playlist $playlist = null;
 
     /**
@@ -75,7 +75,6 @@ class Resource
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -87,7 +86,6 @@ class Resource
     public function setType(string $type): static
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -99,7 +97,6 @@ class Resource
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -111,7 +108,6 @@ class Resource
     public function setUrl(?string $url): static
     {
         $this->url = $url;
-
         return $this;
     }
 
@@ -123,7 +119,6 @@ class Resource
     public function setCoverImage(?string $coverImage): static
     {
         $this->coverImage = $coverImage;
-
         return $this;
     }
 
@@ -135,7 +130,6 @@ class Resource
     public function setPublishedAt(\DateTime $publishedAt): static
     {
         $this->publishedAt = $publishedAt;
-
         return $this;
     }
 
@@ -147,7 +141,6 @@ class Resource
     public function setIsAvailable(bool $isAvailable): static
     {
         $this->isAvailable = $isAvailable;
-
         return $this;
     }
 
@@ -159,7 +152,6 @@ class Resource
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -171,7 +163,6 @@ class Resource
     public function setPlaylist(?Playlist $playlist): static
     {
         $this->playlist = $playlist;
-
         return $this;
     }
 
@@ -189,19 +180,16 @@ class Resource
             $this->borrows->add($borrow);
             $borrow->setResource($this);
         }
-
         return $this;
     }
 
     public function removeBorrow(Borrow $borrow): static
     {
         if ($this->borrows->removeElement($borrow)) {
-            // set the owning side to null (unless already changed)
             if ($borrow->getResource() === $this) {
                 $borrow->setResource(null);
             }
         }
-
         return $this;
     }
 
@@ -219,19 +207,16 @@ class Resource
             $this->reviews->add($review);
             $review->setResource($this);
         }
-
         return $this;
     }
 
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getResource() === $this) {
                 $review->setResource(null);
             }
         }
-
         return $this;
     }
 }

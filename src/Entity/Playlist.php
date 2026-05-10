@@ -23,17 +23,17 @@ class Playlist
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $ceatedAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @var Collection<int, Resource>
      */
-    #[ORM\OneToMany(targetEntity: Resource::class, mappedBy: 'playlist', orphanRemoval: true)]
-    private Collection $yes;
+    #[ORM\OneToMany(targetEntity: Resource::class, mappedBy: 'playlist', orphanRemoval: false)]
+    private Collection $resources;
 
     public function __construct()
     {
-        $this->yes = new ArrayCollection();
+        $this->resources = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,7 +49,6 @@ class Playlist
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -61,49 +60,44 @@ class Playlist
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
-    public function getCeatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->ceatedAt;
+        return $this->createdAt;
     }
 
-    public function setCeatedAt(\DateTimeImmutable $ceatedAt): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->ceatedAt = $ceatedAt;
-
+        $this->createdAt = $createdAt;
         return $this;
     }
 
     /**
      * @return Collection<int, Resource>
      */
-    public function getYes(): Collection
+    public function getResources(): Collection
     {
-        return $this->yes;
+        return $this->resources;
     }
 
-    public function addYe(Resource $ye): static
+    public function addResource(Resource $resource): static
     {
-        if (!$this->yes->contains($ye)) {
-            $this->yes->add($ye);
-            $ye->setPlaylist($this);
+        if (!$this->resources->contains($resource)) {
+            $this->resources->add($resource);
+            $resource->setPlaylist($this);
         }
-
         return $this;
     }
 
-    public function removeYe(Resource $ye): static
+    public function removeResource(Resource $resource): static
     {
-        if ($this->yes->removeElement($ye)) {
-            // set the owning side to null (unless already changed)
-            if ($ye->getPlaylist() === $this) {
-                $ye->setPlaylist(null);
+        if ($this->resources->removeElement($resource)) {
+            if ($resource->getPlaylist() === $this) {
+                $resource->setPlaylist(null);
             }
         }
-
         return $this;
     }
 }
